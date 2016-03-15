@@ -24,6 +24,11 @@ Works fine in all browsers
  
 Quick start
 -----------
+0. Clone this repository  
+    ```bash
+    $ git clone https://github.com/Ivan-Feofanov/ws-audio-api.git
+    $ cd ws-audio-api
+    ```
 
 1. Start secure websockets server from **server** folder
     ```bash
