@@ -21,13 +21,20 @@ Works fine in all browsers
  For Speaker only:
  In Chrome browser you should use secure connection cause Chrome does not support getUserMedia in unsecure HTTP connection  
  [How to setup secure HTTP server](https://docs.nodejitsu.com/articles/HTTP/servers/how-to-create-a-HTTPS-server) 
- 
+
+Bower
+-----
+```bash
+$ bower install ws-audio-api
+```
+
+
 Quick start
 -----------
 0. Clone this repository  
     ```bash
     $ git clone https://github.com/Ivan-Feofanov/ws-audio-api.git
-    $ cd ws-audio-api
+    $ cd ws-audio-api/example
     ```
 
 1. Start secure websockets server from **server** folder
@@ -39,10 +46,7 @@ Quick start
 
 2. Include scripts in both, speaker and listener page
     ```js
-    <script src="scripts/libopus.js"></script>
-    <script src="scripts/xaudio.js"></script>
-    <script src="scripts/opus.js"></script>
-    <script src="scripts/ws-audio-api.js"></script>
+    <script src="scripts/ws-audio-api.min.js"></script>
     ```
 
 3. On Streamer side create new speaker and make start/stop stream buttons
