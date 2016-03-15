@@ -8,16 +8,13 @@
         <button onclick="player.stop()">Stop playing</button>
         <br>
         <br>
-        <a href="#" class="mute" onclick="voiceMute()">Mute button</a>
+        <a href="#" class="mute" onclick="voiceMute()">Mute</a>
         <br>
         <br>
         <input id="volume" type="range" min ="0.0" max="1.0" step ="0.01" oninput="setVol(this.value)" onchange="setVol(this.value)" style="-webkit-appearance: slider-vertical">
         <input type="text" id="volumeIndicator">
     </body>
-    <script src="scripts/libopus.js"></script>
-    <script src="scripts/xaudio.js"></script>
-    <script src="scripts/opus.js"></script>
-    <script src="scripts/ws-audio-api.js"></script>
+    <script src="scripts/ws-audio-api.min.js"></script>
     <script>
         var player = new WSAudioAPI.Player();
         var streamer = new WSAudioAPI.Streamer();
