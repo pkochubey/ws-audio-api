@@ -49,6 +49,7 @@
             var _this = this;
             this._makeStream = function () {
                 navigator.getUserMedia({audio: true}, function (stream) {
+                    _this.stream = stream;
                     _this.audioInput = audioContext.createMediaStreamSource(stream);
                     _this.gainNode = audioContext.createGain();
                     _this.recorder = audioContext.createScriptProcessor(_this.config.codec.bufferSize, 1, 1);
@@ -97,12 +98,19 @@
             if (_onclose) {
                 _onclose();
             }
-            _this.audioInput.disconnect();
-            _this.audioInput = null;
-            _this.gainNode.disconnect();
-            _this.gainNode = null;
-            _this.recorder.disconnect();
-            _this.recorder = null;
+            if (_this.audioInput) {
+              _this.audioInput.disconnect();
+              _this.audioInput = null;
+            } 
+            if (_this.gainNode) {
+              _this.gainNode.disconnect();
+              _this.gainNode = null;
+            } 
+            if (_this.recorder) {
+                _this.recorder.disconnect();
+               _this.recorder = null; 
+            }
+            _this.stream.getTracks()[0].stop();
             console.log('Disconnected from server');
         };
     };
@@ -122,12 +130,19 @@
     };
 
     WSAudioAPI.Streamer.prototype.stop = function () {
-        this.audioInput.disconnect();
-        this.audioInput = null;
-        this.gainNode.disconnect();
-        this.gainNode = null;
-        this.recorder.disconnect();
-        this.recorder = null;
+        if (this.audioInput) {
+          this.audioInput.disconnect();
+          this.audioInput = null;
+        } 
+        if (this.gainNode) {
+          this.gainNode.disconnect();
+          this.gainNode = null;
+        } 
+        if (this.recorder) {
+            this.recorder.disconnect();
+           this.recorder = null; 
+        }
+        this.stream.getTracks()[0].stop()
 
         if (!this.parentSocket) {
             this.socket.close();
