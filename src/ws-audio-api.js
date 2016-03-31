@@ -125,8 +125,10 @@
         console.log('Mic unmuted');
     };
 
-    WSAudioAPI.Streamer.prototype.onError = function (err) {
-        console.log('Streamer error: ', err);
+    WSAudioAPI.Streamer.prototype.onError = function (e) {
+        var error = new Error(e.name);
+        error.name = 'NavigatorUserMediaError';
+        throw error;
     };
 
     WSAudioAPI.Streamer.prototype.stop = function () {
