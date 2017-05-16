@@ -29,6 +29,15 @@ Bower
 $ bower install ws-audio-api
 ```
 
+NPM
+-----
+```bash
+$ npm install ws-audio-api
+```
+
+```js
+$ import 'ws-audio-api'
+```
 
 Quick start
 -----------
