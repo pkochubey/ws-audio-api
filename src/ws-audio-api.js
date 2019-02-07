@@ -23,7 +23,7 @@
 	};
 
 	var audioContext = new(window.AudioContext || window.webkitAudioContext)();
-
+    audioContext.resume()
 	var WSAudioAPI = global.WSAudioAPI = {
 		Player: function(config, socket) {
 			this.config = {};
