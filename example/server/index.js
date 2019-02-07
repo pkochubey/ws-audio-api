@@ -1,23 +1,18 @@
-var https = require('https');
 var fs = require("fs");
 var WebSocketServer = require('ws').Server;
 
 var wsPort = 5000;
-var masterId;
+var masterId = 0;
 var listeners = {};
 
-var httpsServer = https.createServer({
-    key: fs.readFileSync('key.pem', 'utf8'),
-    cert: fs.readFileSync('cert.pem', 'utf8')
-}).listen(wsPort);
-
-var wss = new WebSocketServer({ server: httpsServer });
+var wss = new WebSocketServer({ port: wsPort });
 
 wss.on('connection', function (ws) {
-    var connectionId = ws.upgradeReq.headers['sec-websocket-key'];
+    console.log(ws.upgradeReq)
+    var connectionId = masterId + 1;
     var isMaster = false;
 
-    if (!masterId) {
+    if (connectionId == 1) {
         masterId = connectionId;
         isMaster = true;
         ws.on('message', function (message) {

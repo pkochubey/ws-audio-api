@@ -23,7 +23,6 @@
 	};
 
 	var audioContext = new(window.AudioContext || window.webkitAudioContext)();
-    audioContext.resume()
 	var WSAudioAPI = global.WSAudioAPI = {
 		Player: function(config, socket) {
 			this.config = {};
@@ -35,7 +34,12 @@
 			this.silence = new Float32Array(this.config.codec.bufferSize);
 		},
 		Streamer: function(config, socket) {
-			this.config = {};
+            navigator.getUserMedia = (navigator.getUserMedia ||
+                navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia ||
+                navigator.msGetUserMedia);
+
+            this.config = {};
 			this.config.codec = this.config.codec || defaultConfig.codec;
 			this.config.server = this.config.server || defaultConfig.server;
 			this.sampler = new Resampler(audioContext.sampleRate, this.config.codec.sampleRate, 1, this.config.codec.bufferSize);
@@ -43,7 +47,8 @@
 			this.encoder = new OpusEncoder(this.config.codec.sampleRate, this.config.codec.channels, this.config.codec.app, this.config.codec.frameDuration);
 			var _this = this;
 			this._makeStream = function(onError) {
-                navigator.mediaDevices.getUserMedia({ audio: true }, function(stream) {
+                navigator.getUserMedia({ audio: true }, function(stream) {
+                    audioContext.resume()
 					_this.stream = stream;
 					_this.audioInput = audioContext.createMediaStreamSource(stream);
 					_this.gainNode = audioContext.createGain();
@@ -67,7 +72,7 @@
 		var _this = this;
 
 		if (!this.parentSocket) {
-			this.socket = new WebSocket('wss://' + this.config.server.host + ':' + this.config.server.port);
+			this.socket = new WebSocket('ws://' + this.config.server.host + ':' + this.config.server.port);
 		} else {
 			this.socket = this.parentSocket;
 		}
@@ -185,13 +190,10 @@
 		this.gainNode.connect(audioContext.destination);
 
 		if (!this.parentSocket) {
-			this.socket = new WebSocket('wss://' + this.config.server.host + ':' + this.config.server.port);
+			this.socket = new WebSocket('ws://' + this.config.server.host + ':' + this.config.server.port);
 		} else {
 			this.socket = this.parentSocket;
 		}
-        //this.socket.onopen = function () {
-        //    console.log('Connected to server ' + _this.config.server.host + ' as listener');
-        //};
         var _onmessage = this.parentOnmessage = this.socket.onmessage;
         this.socket.onmessage = function(message) {
         	if (_onmessage) {
@@ -205,12 +207,6 @@
         		reader.readAsArrayBuffer(message.data);
         	}
         };
-        //this.socket.onclose = function () {
-        //    console.log('Connection to server closed');
-        //};
-        //this.socket.onerror = function (err) {
-        //    console.log('Getting audio data error:', err);
-        //};
       };
 
       WSAudioAPI.Player.prototype.getVolume = function() {
