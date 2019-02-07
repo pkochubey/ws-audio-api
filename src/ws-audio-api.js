@@ -35,11 +35,6 @@
 			this.silence = new Float32Array(this.config.codec.bufferSize);
 		},
 		Streamer: function(config, socket) {
-			navigator.getUserMedia = (navigator.getUserMedia ||
-				navigator.webkitGetUserMedia ||
-				navigator.mozGetUserMedia ||
-				navigator.msGetUserMedia);
-
 			this.config = {};
 			this.config.codec = this.config.codec || defaultConfig.codec;
 			this.config.server = this.config.server || defaultConfig.server;
@@ -48,7 +43,7 @@
 			this.encoder = new OpusEncoder(this.config.codec.sampleRate, this.config.codec.channels, this.config.codec.app, this.config.codec.frameDuration);
 			var _this = this;
 			this._makeStream = function(onError) {
-				navigator.getUserMedia({ audio: true }, function(stream) {
+                navigator.mediaDevices.getUserMedia({ audio: true }, function(stream) {
 					_this.stream = stream;
 					_this.audioInput = audioContext.createMediaStreamSource(stream);
 					_this.gainNode = audioContext.createGain();
