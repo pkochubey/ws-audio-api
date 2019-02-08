@@ -188,6 +188,7 @@
 		this.gainNode = audioContext.createGain();
 		this.scriptNode.connect(this.gainNode);
 		this.gainNode.connect(audioContext.destination);
+        audioContext.resume()
 
 		if (!this.parentSocket) {
 			this.socket = new WebSocket('ws://' + this.config.server.host + ':' + this.config.server.port);
@@ -199,6 +200,7 @@
         	if (_onmessage) {
         		_onmessage(message);
         	}
+            audioContext.resume()
         	if (message.data instanceof Blob) {
         		var reader = new FileReader();
         		reader.onload = function() {
